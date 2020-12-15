@@ -15,8 +15,8 @@ const prodConfig = {
         new ModuleFederationPlugin({
             name: 'dashboard',
             filename: 'remoteEntry.js',
-            remotes: {
-                dashboard: `dashboard@${domain}/dashboard/latest/remoteEntry.js`
+            exposes: {
+                './DashboardApp': './src/bootstrap'
             },
             shared: packageJson.dependencies
         })
