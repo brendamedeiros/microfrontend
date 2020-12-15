@@ -1,45 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { createMemoryHistory, createBrowserHistory } from 'history';
+import App from './App';
 
 // Mount function to start up the app
 const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
-    const history = defaultHistory || createMemoryHistory({
-        initialEntries: [initialPath]
+  const history =
+    defaultHistory ||
+    createMemoryHistory({
+      initialEntries: [initialPath],
     });
 
-    // history object that comes back from calling createMemoryHistory as an event listener tied to it called 'listen'
-    // Whenever the URL changes/user clicks on link, this history object is going to call any function that we have provided to this 'listen'
-    if (onNavigate) {
-        history.listen(onNavigate);
-    }
+  if (onNavigate) {
+    history.listen(onNavigate);
+  }
 
-    ReactDOM.render(
-        <App history={history} />,
-        el
-    );
+  ReactDOM.render(<App history={history} />, el);
 
-    return {
-        // any time the container does some kind of navigation, we want the container onParentNavigate
-        onParentNavigate({ pathname: nextPathName }) {
-            const { pathname } = history.location;
+  return {
+    onParentNavigate({ pathname: nextPathname }) {
+      const { pathname } = history.location;
 
-            if (pathname !== nextPathName) {
-                history.push(nextPathName);
-            }
-        }
-    }
-}
+      if (pathname !== nextPathname) {
+        history.push(nextPathname);
+      }
+    },
+  };
+};
 
-// If we are in dev in isolation, call mount immediately
+// If we are in development and in isolation,
+// call mount immediately
 if (process.env.NODE_ENV === 'development') {
-    const devRoot = document.getElementById('_marketing-dev-root');
+  const devRoot = document.querySelector('#_marketing-dev-root');
 
-    if (devRoot) {
-        mount(devRoot, { defaultHistory: createBrowserHistory() });
-    }
+  if (devRoot) {
+    mount(devRoot, { defaultHistory: createBrowserHistory() });
+  }
 }
 
-// We are running through container and we should export the mount function
+// We are running through container
+// and we should export the mount function
 export { mount as mountMarketingEl };

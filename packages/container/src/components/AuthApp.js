@@ -1,4 +1,4 @@
-import { mountAuthEl } from 'auth/AuthApp';
+import { mount } from 'auth/AuthApp';
 import React, { useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export default ({ onSignIn }) => {
           history.push(nextPathname);
         }
       },
-      onSignIn
+      onSignIn,
     });
 
     history.listen(onParentNavigate);
